@@ -72,33 +72,25 @@
 
 <script>
     const likeSlider = document.getElementById('likeSlider');
+    const seedField = document.getElementById('seedField');
     const LIKES_STORAGE_KEY = 'likesValue';
+    const SEED_STORAGE_KEY = 'seedValue';
     document.addEventListener('DOMContentLoaded', function() {
-        const saved = sessionStorage.getItem(LIKES_STORAGE_KEY);
-        if (saved !== null) {
-            likeSlider.value = saved;
-            //likeSlider.dispatchEvent(new Event('input'));
-        }
+        const savedLikes = sessionStorage.getItem(LIKES_STORAGE_KEY);
+        const savedSeed = sessionStorage.getItem(SEED_STORAGE_KEY);
+        if (savedLikes !== null) likeSlider.value = savedLikes;
+        if (savedSeed !== null) seedField.value = savedSeed;
     });
+    
     likeSlider.addEventListener('change', function() {
         sessionStorage.setItem(LIKES_STORAGE_KEY, this.value);
     });
     
-    const seedField = document.getElementById('seedField');
-    const SEED_STORAGE_KEY = 'seedValue';
-    document.addEventListener('DOMContentLoaded', function() {
-        const saved = sessionStorage.getItem(SEED_STORAGE_KEY);
-        if (saved !== null) {
-            seedField.value = saved;
-            //likeSlider.dispatchEvent(new Event('input'));
-        }
-    });
     seedField.addEventListener('change', function() {
         sessionStorage.setItem(SEED_STORAGE_KEY, this.value);
     });
     
     document.getElementById('randomizeSeed').addEventListener('click', function(e) {
-        
         this.blur();
     });
 </script>
