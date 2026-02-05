@@ -90,7 +90,19 @@
         sessionStorage.setItem(SEED_STORAGE_KEY, this.value);
     });
     
-    document.getElementById('randomizeSeed').addEventListener('click', function(e) {
+    document.getElementById('randomizeSeed').addEventListener('click', function() {
+        seedField.value = generateSeed(8);
+        seedField.dispatchEvent(new Event('change'));
         this.blur();
     });
+    
+    function generateSeed(length) {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
 </script>
