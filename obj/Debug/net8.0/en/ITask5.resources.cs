@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ITask5")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute(" ")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+525bae57b4ba0ead9bf4411b276b9abf03302450")]
 [assembly: System.Reflection.AssemblyProductAttribute("ITask5")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ITask5")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -10,6 +10,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         .AddSupportedCultures(Languages.All.ToArray())
         .AddSupportedUICultures(Languages.All.ToArray());
 });
+builder.Services.AddSession();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -26,4 +27,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Main}/{action=Index}/{id?}");
+app.UseSession();
 app.Run();

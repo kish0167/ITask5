@@ -37,3 +37,5 @@ D:\Itransition\ITask5\ITask5\obj\Debug\net8.0\pl\ITask5.resources.cs
 D:\Itransition\ITask5\ITask5\obj\Debug\net8.0\pl\ITask5.resources.dll
 D:\Itransition\ITask5\ITask5\obj\Debug\net8.0\ITask5.Resources.Views.Main.Index.en.resources
 D:\Itransition\ITask5\ITask5\obj\Debug\net8.0\ITask5.Resources.Views.Main.Index.pl.resources
+D:\Itransition\ITask5\ITask5\obj\Debug\net8.0\ITask5.Resources.Views.Shared._Layout.en.resources
+D:\Itransition\ITask5\ITask5\obj\Debug\net8.0\ITask5.Resources.Views.Shared._Layout.pl.resources

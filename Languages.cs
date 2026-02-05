@@ -1,12 +1,21 @@
-﻿namespace ITask5;
+﻿using System.Globalization;
+namespace ITask5;
 
 public static class Languages
 {
-    public static readonly IReadOnlyList<string> All = new[]{"en","pl"}.AsReadOnly();
-
-    public static readonly Dictionary<string, string> FullNames = new()
+    public static IReadOnlyList<string> All => new []{"en", "pl"};
+    public static string GetLanguageName(string twoLetterCode)
     {
-        {"en", "English"},
-        {"pl", "Polski"}
-    };
+        var culture = new CultureInfo(twoLetterCode);
+        return Capitalize(culture.NativeName);
+    }
+
+    private static string Capitalize(string s)
+    {
+        if (string.IsNullOrEmpty(s))
+        {
+            throw new ArgumentException();
+        }
+        return char.ToUpper(s[0]) + s.Substring(1);
+    }
 }
