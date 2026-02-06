@@ -4,6 +4,7 @@ namespace ITask5;
 public static class Languages
 {
     public static IReadOnlyList<string> All => new []{"en", "pl"};
+    public static string Default => All[0];
     public static string GetLanguageName(string twoLetterCode)
     {
         var culture = new CultureInfo(twoLetterCode);

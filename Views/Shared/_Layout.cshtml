@@ -14,7 +14,7 @@
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
             <a class="navbar-brand" asp-area="" asp-controller="Main" asp-action="Index">ITask5</a>
-            <div class="d-flex align-items-center gap-3 me-auto ms-3">
+            <form id="inputs" method="get" asp-controller="Main" asp-action="Index" class="d-flex align-items-center gap-3 me-auto ms-3">    
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center justify-content-between
@@ -26,25 +26,26 @@
                         <ul class="dropdown-menu">
                             @foreach (string lang in Languages.All)
                             {
-                                <li><a class="dropdown-item" asp-controller="Localization"
-                                       asp-action="Index" asp-route-culture=@lang>@Languages.GetLanguageName(lang)</a></li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Localization" asp-action="Index"
+                                       asp-route-culture=@lang>@Languages.GetLanguageName(lang)</a></li>
                             }
                         </ul>
                     </li>
                 </ul>
                 <div class="input-group input-group-sm" style="width: 180px; height: 32px;">
-                    <input type="text" class="form-control bg-light py-1" placeholder="@Localazier["seed_label"]"
-                           aria-label="Seed" value="167" id="seedField" pattern="a-f0-9">
+                    <input type="text" class="form-control bg-light py-1" placeholder="@Localazier["seed_label"]" name="seed"
+                           onchange="this.form.submit()" aria-label="Seed" value="1" id="seedField" pattern="a-f0-9">
                     <button class="btn btn-light border" type="button" id="randomizeSeed" title="@Localazier["randomize_button"]">
                         <i class="bi bi-shuffle"></i>
                     </button>
                 </div>
                 <div class="d-flex align-items-center gap-2" style="width: 120px;">
                     <i class="bi bi-heart text-muted fs-6" id="likeIcon"></i>
-                    <input type="range" class="form-range" min="0" max="10" step="0.1"
-                           value="5" id="likeSlider" style="height: 1.5rem;">
+                    <input type="range" class="form-range" name="likes" min="0" max="10" step="0.1"
+                           value="5" id="likeSlider" style="height: 1.5rem;" onchange="this.form.submit()">
                 </div>
-            </div>
+            </form>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

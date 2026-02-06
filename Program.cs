@@ -6,7 +6,7 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddLocalization(options =>  options.ResourcesPath = "Resources");
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
-    options.SetDefaultCulture(Languages.All[0])
+    options.SetDefaultCulture(Languages.Default)
         .AddSupportedCultures(Languages.All.ToArray())
         .AddSupportedUICultures(Languages.All.ToArray());
 });

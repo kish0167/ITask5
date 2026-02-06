@@ -14,13 +14,13 @@ public class MainController(ILogger<MainController> logger) : Controller
         {
             Album = "Intensity",
             Genre = "Rap",
-            Artist = "gotrin",
+            Artist = language + " gotrin",
             CoverImageUrl = "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-            DurationSeconds = 195,
+            DurationSeconds = (int)(likes * 10),
             Id = 1,
-            Label = "Roger that!",
+            Label = seed,
             PreviewAudioUrl = "https://commondatastorage.googleapis.com/codeskulptor-demos/pyman_assets/ateapill.ogg",
-            ReviewText = "suuuuper cool!",
+            ReviewText = "this is page #" + page,
             Title = "Never gonna give u up!",
             Year = 2025
         }};
@@ -30,14 +30,6 @@ public class MainController(ILogger<MainController> logger) : Controller
             Songs = songs,
             CurrentPage = page
         });
-    }
-    
-    [HttpGet]
-    public IActionResult GetDetails(int id)
-    {
-        //var song = GetSongById(id);
-        //return PartialView("_SongDetails", song);
-        return Redirect("/Main");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
