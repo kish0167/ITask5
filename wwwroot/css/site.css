@@ -20,3 +20,168 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.song-row:hover {
+  background-color: #f8f9fa !important;
+}
+
+.song-row.active-expand {
+  background-color: #e3f2fd !important;
+}
+
+.toggle-icon {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.song-row[aria-expanded="true"] .toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Album Cover - CSS Generated */
+.album-cover {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.album-cover::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(255,255,255,0.1) 10px,
+          rgba(255,255,255,0.1) 20px
+  );
+  animation: shimmer 20s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+.album-cover-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.album-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.album-artist {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+
+.microphone-icon {
+  font-size: 2rem;
+  margin-top: 0.5rem;
+  filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+}
+
+/* Details Container */
+.details-container {
+  background: linear-gradient(to right, #f8f9fa 0%, #ffffff 100%);
+}
+
+/* Audio Player */
+.play-btn {
+  min-width: 140px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.play-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+}
+
+.play-btn.playing {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.progress-container {
+  max-width: 300px;
+}
+
+/* Lyrics */
+.lyrics-text {
+  font-style: italic;
+  color: #555;
+  border-left: 3px solid #dee2e6;
+  padding-left: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Collapse Animation */
+.collapse {
+  transition: all 0.35s ease;
+}
+
+.collapse-row td {
+  border-top: none !important;
+}
+
+.album-cover-wrapper {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.album-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.album-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+  padding: 1rem 0.5rem 0.5rem;
+  color: white;
+  text-align: center;
+}
+
+.album-title-overlay {
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.album-artist-overlay {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  margin-top: 0.25rem;
+}

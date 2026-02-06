@@ -34,14 +34,14 @@
                 </ul>
                 <div class="input-group input-group-sm" style="width: 180px; height: 32px;">
                     <input type="text" class="form-control bg-light py-1" placeholder="@Localazier["seed_label"]"
-                           aria-label="Seed" value="167" id="seedField">
-                    <button class="btn btn-light border" type="button" id="randomizeSeed" title="Randomize">
+                           aria-label="Seed" value="167" id="seedField" pattern="a-f0-9">
+                    <button class="btn btn-light border" type="button" id="randomizeSeed" title="@Localazier["randomize_button"]">
                         <i class="bi bi-shuffle"></i>
                     </button>
                 </div>
                 <div class="d-flex align-items-center gap-2" style="width: 120px;">
                     <i class="bi bi-heart text-muted fs-6" id="likeIcon"></i>
-                    <input type="range" class="form-range" min="0" max="10" step="1"
+                    <input type="range" class="form-range" min="0" max="10" step="0.1"
                            value="5" id="likeSlider" style="height: 1.5rem;">
                 </div>
             </div>
@@ -90,15 +90,20 @@
         sessionStorage.setItem(SEED_STORAGE_KEY, this.value);
     });
     
+    seedField.addEventListener('input', function(e) {
+        this.value = this.value.replace(/[^0-9a-fA-F]/g, '');
+        this.value = this.value.slice(0,16);
+    });
+    
     document.getElementById('randomizeSeed').addEventListener('click', function() {
-        seedField.value = generateSeed(8);
+        seedField.value = generateSeed(16);
         seedField.dispatchEvent(new Event('change'));
         this.blur();
     });
     
     function generateSeed(length) {
         var result = '';
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var characters = '0123456789abcdef';
         var charactersLength = characters.length;
         for ( var i = 0; i < length; i++ ) {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));

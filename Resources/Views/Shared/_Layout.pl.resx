@@ -19,6 +19,10 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="seed_label" xml:space="preserve">
-        <value>klucz do generacji</value>
+        <value>Ziarno generatora</value>
+    </data>
+    <data name="randomize_button" xml:space="preserve">
+        <value>Generować</value>
+        <comment>randomize_button</comment>
     </data>
 </root>

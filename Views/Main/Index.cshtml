@@ -1,6 +1,154 @@
-﻿
-@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using ITask5.Helpers
+@model IEnumerable<SongViewModel>
 
-<h1>@Localazier["hello"]</h1>
+<div class="container-fluid mt-4">
+    <table class="table table-hover" id="songsTable">
+        <thead class="table-light">
+            <tr>
+                <th style="width: 40px;"></th>
+                <th>#</th>
+                <th>Song</th>
+                <th>Artist</th>
+                <th>Album</th>
+                <th>Genre</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var song in Model)
+            {
+                <tr class="song-row" data-bs-toggle="collapse" 
+                    data-bs-target="#details-@song.Id" 
+                    aria-expanded="false" 
+                    aria-controls="details-@song.Id"
+                    style="cursor: pointer;">
+                    <td>
+                        <i class="bi bi-chevron-down toggle-icon" id="icon-@song.Id"></i>
+                    </td>
+                    <td>@song.Id</td>
+                    <td>@song.Title</td>
+                    <td>@song.Artist</td>
+                    <td>@song.Album</td>
+                    <td><span class="badge bg-secondary">@song.Genre</span></td>
+                </tr>
+                
+                <!-- Expandable Details Row -->
+                <tr class="collapse-row">
+                    <td colspan="6" class="p-0 border-0">
+                        <div class="collapse" id="details-@song.Id">
+                            <div class="details-container p-4 bg-light border-start border-4 border-primary">
+                                <div class="row">
+                                
+                                    <!-- Album Cover -->
+                                    <div class="col-md-3 col-lg-2 mb-3">
+                                        
+                                        <!-- Album Cover Image -->
+                                        <div class="album-cover-wrapper">
+                                            <img src="@song.CoverImageUrl"
+                                                 alt="@song.Album cover"
+                                                 class="album-cover-img"
+                                                 onerror="this.onerror=null; this.src='/images/default-album.png';"/>
+                                            <div class="album-overlay">
+                                                <div class="album-title-overlay">@song.Album</div>
+                                                <div class="album-artist-overlay">@song.Artist</div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-2">
+                                            <small class="text-muted">@song.Label, @song.Year</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Song Info & Player -->
+                                    <div class="col-md-6 col-lg-7">
+                                        <h4 class="mb-1">@song.Title</h4>
+                                        <p class="text-muted mb-3">from @song.Album by @song.Artist</p>
+                                        
+                                        <!-- Audio Player -->
+                                        <div class="audio-player mb-3">
+                                            <button class="btn btn-primary btn-lg play-btn" 
+                                                    data-audio="@song.PreviewAudioUrl"
+                                                    onclick="togglePlay(this, event)">
+                                                <i class="bi bi-play-fill"></i> Play Preview
+                                            </button>
+                                            
+                                            <div class="progress-container mt-2 d-none" id="progress-@song.Id">
+                                                <div class="progress" style="height: 6px;">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                                         role="progressbar" style="width: 0%"></div>
+                                                </div>
+                                                <small class="text-muted">
+                                                    <span class="current-time">0:00</span> / 
+                                                    <span class="duration">@SongHelpers.FormatDuration(song.DurationSeconds)</span>
+                                                </small>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Lyrics/Review -->
+                                        <div class="review-section">
+                                            <h6 class="text-uppercase text-muted mb-2" style="font-size: 0.75rem; letter-spacing: 1px;">Lyrics</h6>
+                                            <blockquote class="blockquote lyrics-text">
+                                                @song.ReviewText
+                                            </blockquote>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Stats -->
+                                    <div class="col-md-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-subtitle mb-2 text-muted">Track Info</h6>
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="mb-2">
+                                                        <i class="bi bi-clock me-2"></i>
+                                                        @SongHelpers.FormatDuration(song.DurationSeconds)
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="bi bi-disc me-2"></i>
+                                                        @song.Genre
+                                                    </li>
+                                                    <li class="mb-2">
+                                                        <i class="bi bi-calendar me-2"></i>
+                                                        @song.Year
+                                                    </li>
+                                                    <li>
+                                                        <i class="bi bi-building me-2"></i>
+                                                        @song.Label
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item"><a class="page-link" href="#">«</a></li>
+        <li class="page-item"><a class="page-link" href="#">4</a></li>
+        <li class="page-item active"><a class="page-link" href="#">5</a></li>
+        <li class="page-item"><a class="page-link" href="#">6</a></li>
+        <li class="page-item"><a class="page-link" href="#">»</a></li>
+    </ul>
+</nav>
+
+<script>
+    document.querySelectorAll('.song-row').forEach(row => {
+        row.addEventListener('click', function(e) {
+            // Don't trigger if clicking the play button
+            if (e.target.closest('.play-btn')) return;
+            
+            const targetId = this.getAttribute('data-bs-target');
+            const icon = this.querySelector('.toggle-icon');
+            
+            // Toggle active state styling
+            this.classList.toggle('active-expand');
+        });
+    });
+</script>

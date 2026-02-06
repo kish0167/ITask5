@@ -60,7 +60,16 @@ namespace ITask5.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to seed.
+        ///   Looks up a localized string similar to Randomize.
+        /// </summary>
+        internal static string randomize_button {
+            get {
+                return ResourceManager.GetString("randomize_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seed.
         /// </summary>
         internal static string seed_label {
             get {

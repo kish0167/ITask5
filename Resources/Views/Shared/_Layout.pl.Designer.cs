@@ -60,7 +60,16 @@ namespace ITask5.Resources.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to klucz do generacji.
+        ///   Looks up a localized string similar to Generować.
+        /// </summary>
+        internal static string randomize_button {
+            get {
+                return ResourceManager.GetString("randomize_button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ziarno generatora.
         /// </summary>
         internal static string seed_label {
             get {
