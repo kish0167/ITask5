@@ -8,7 +8,7 @@ public class MainController(ILogger<MainController> logger) : Controller
 {
     private readonly ILogger<MainController> _logger = logger;
 
-    public IActionResult Index()
+    public IActionResult Index(string language, string seed, float likes, int page = 1)
     {
         List<SongViewModel> songs = new List<SongViewModel>(){new SongViewModel()
         {
@@ -25,7 +25,11 @@ public class MainController(ILogger<MainController> logger) : Controller
             Year = 2025
         }};
         
-        return View(songs);
+        return View(new PageViewModel()
+        {
+            Songs = songs,
+            CurrentPage = page
+        });
     }
     
     [HttpGet]
