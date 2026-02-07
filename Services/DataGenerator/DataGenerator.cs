@@ -1,5 +1,6 @@
 ﻿using ITask5.Models;
 using Microsoft.Extensions.Options;
+using Bogus;
 
 namespace ITask5.Services.DataGenerator;
 
