@@ -1,35 +1,20 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using ITask5.Models;
+using ITask5.Services;
+using ITask5.Services.DataGenerator;
 
 namespace ITask5.Controllers;
 
-public class MainController(ILogger<MainController> logger) : Controller
+public class MainController(ILogger<MainController> logger, IDataGenerator dataGenerator) : Controller
 {
     private readonly ILogger<MainController> _logger = logger;
+    private readonly IDataGenerator _dataGenerator = dataGenerator;
 
-    public IActionResult Index(string language, string seed, float likes, int page = 1)
+    public IActionResult Index(string? seed, float? likes, int? page)
     {
-        List<SongViewModel> songs = new List<SongViewModel>(){new SongViewModel()
-        {
-            Album = "Intensity",
-            Genre = "Rap",
-            Artist = language + " gotrin",
-            CoverImageUrl = "https://picsum.photos/id/870/200/300?grayscale&blur=2",
-            DurationSeconds = (int)(likes * 10),
-            Id = 1,
-            Label = seed,
-            PreviewAudioUrl = "https://commondatastorage.googleapis.com/codeskulptor-demos/pyman_assets/ateapill.ogg",
-            ReviewText = "this is page #" + page,
-            Title = "Never gonna give u up!",
-            Year = 2025
-        }};
-        
-        return View(new PageViewModel()
-        {
-            Songs = songs,
-            CurrentPage = page
-        });
+        string language = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+        return View(_dataGenerator.Generate(language, seed, likes, page));
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -37,4 +22,5 @@ public class MainController(ILogger<MainController> logger) : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+    
 }
