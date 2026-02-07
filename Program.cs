@@ -1,12 +1,14 @@
 using ITask5;
 using ITask5.Services;
 using ITask5.Services.DataGenerator;
+using ITask5.Services.TextGenerator;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews()
     .AddViewLocalization();
 builder.Services.AddLocalization(options =>  options.ResourcesPath = "Resources");
 
+builder.Services.AddSingleton<ITextGenerator, TextGenerator>();
 builder.Services.AddSingleton<IDataGenerator, DataGenerator>();
 builder.Services.Configure<DataGeneratorOptions>(options =>
 {

@@ -4,5 +4,5 @@ namespace ITask5.Services.DataGenerator;
 
 public interface IDataGenerator
 {
-    public PageViewModel Generate(string? language, string? seed, float? likes, int? page);
+    public PageViewModel GeneratePage(string? language, string? seed, float? likes, int? page);
 }
