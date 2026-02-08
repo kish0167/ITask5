@@ -1,19 +1,22 @@
 ﻿using System.Globalization;
 using ITask5.Models;
+using ITask5.Services.AudioGenerator;
 using Microsoft.Extensions.Options;
 using ITask5.Services.TextGenerator;
 
 namespace ITask5.Services.DataGenerator;
 
-public class DataGenerator(IOptions<DataGeneratorOptions> options, ITextGenerator textGenerator) : IDataGenerator
+public class DataGenerator(IOptions<DataGeneratorOptions> options, ITextGenerator textGenerator, IAudioGenerator audioGenerator) : IDataGenerator
 {
     private readonly DataGeneratorOptions _options = options.Value;
     private readonly ITextGenerator _textGenerator = textGenerator;
+    private readonly IAudioGenerator _audioGenerator = audioGenerator;
 
     public PageViewModel GeneratePage(string? language, string? seed, float? likes, int? page)
     {
         GenerationParameters parameters = CreateGenerationParameters(language, seed, likes, page);
         List<SongViewModel> songs = _textGenerator.GenerateSongsWithText(parameters);
+        songs = _audioGenerator.AddAudio(songs, parameters);
         return new PageViewModel()
         {
             Songs = songs,

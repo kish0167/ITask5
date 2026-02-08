@@ -1,5 +1,6 @@
 using ITask5;
 using ITask5.Services;
+using ITask5.Services.AudioGenerator;
 using ITask5.Services.DataGenerator;
 using ITask5.Services.TextGenerator;
 
@@ -9,6 +10,7 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddLocalization(options =>  options.ResourcesPath = "Resources");
 
 builder.Services.AddSingleton<ITextGenerator, TextGenerator>();
+builder.Services.AddSingleton<IAudioGenerator, AudioGenerator>();
 builder.Services.AddSingleton<IDataGenerator, DataGenerator>();
 builder.Services.Configure<DataGeneratorOptions>(options =>
 {

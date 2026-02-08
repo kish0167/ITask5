@@ -60,11 +60,56 @@ namespace ITask5.Resources.Views.Main {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to hello.
+        ///   Looks up a localized string similar to Album.
         /// </summary>
-        internal static string hello {
+        internal static string album_column_title {
             get {
-                return ResourceManager.GetString("hello", resourceCulture);
+                return ResourceManager.GetString("album_column_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Artist.
+        /// </summary>
+        internal static string artist_column_title {
+            get {
+                return ResourceManager.GetString("artist_column_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Genre.
+        /// </summary>
+        internal static string genre_column_title {
+            get {
+                return ResourceManager.GetString("genre_column_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Play.
+        /// </summary>
+        internal static string play_button_label {
+            get {
+                return ResourceManager.GetString("play_button_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Song.
+        /// </summary>
+        internal static string song_column_title {
+            get {
+                return ResourceManager.GetString("song_column_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Track info.
+        /// </summary>
+        internal static string track_info {
+            get {
+                return ResourceManager.GetString("track_info", resourceCulture);
             }
         }
     }

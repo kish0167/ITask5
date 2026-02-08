@@ -7,10 +7,10 @@
             <tr>
                 <th style="width: 40px;"></th>
                 <th>#</th>
-                <th>Song</th>
-                <th>Artist</th>
-                <th>Album</th>
-                <th>Genre</th>
+                <th>@Localazier["song_column_title"]</th>
+                <th>@Localazier["artist_column_title"]</th>
+                <th>@Localazier["album_column_title"]</th>
+                <th>@Localazier["genre_column_title"]</th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@
                                             <img src="@song.CoverImageUrl"
                                                  alt="@song.Album cover"
                                                  class="album-cover-img"
-                                                 onerror="this.onerror=null; this.src='/images/default-album.png';"/>
+                                                 onerror="this.onerror=null; this.src='https://picsum.photos/id/870/200/300';"/>
                                             <div class="album-overlay">
                                                 <div class="album-title-overlay">@song.Album</div>
                                                 <div class="album-artist-overlay">@song.Artist</div>
@@ -64,19 +64,18 @@
                                         
                                         <!-- Audio Player -->
                                         <div class="audio-player mb-3">
-                                            <button class="btn btn-primary btn-lg play-btn" 
+                                            <button class="btn btn-primary btn-lg play-btn"
                                                     data-audio="@song.PreviewAudioUrl"
                                                     onclick="togglePlay(this, event)">
-                                                <i class="bi bi-play-fill"></i> Play Preview
+                                                <i class="bi bi-play-fill"></i> @Localazier["play_button_label"]
                                             </button>
-                                            
                                             <div class="progress-container mt-2 d-none" id="progress-@song.Id">
                                                 <div class="progress" style="height: 6px;">
-                                                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                                                         role="progressbar" style="width: 0%"></div>
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                         role="progressbar" style="width: 0"></div>
                                                 </div>
                                                 <small class="text-muted">
-                                                    <span class="current-time">0:00</span> / 
+                                                    <span class="current-time">0:00</span> /
                                                     <span class="duration">@SongHelpers.FormatDuration(song.DurationSeconds)</span>
                                                 </small>
                                             </div>
@@ -87,7 +86,7 @@
                                     <div class="col-md-3">
                                         <div class="card h-100">
                                             <div class="card-body">
-                                                <h6 class="card-subtitle mb-2 text-muted">Track Info</h6>
+                                                <h6 class="card-subtitle mb-2 text-muted">@Localazier["track_info"]</h6>
                                                 <ul class="list-unstyled mb-0">
                                                     <li class="mb-2">
                                                         <i class="bi bi-clock me-2"></i>
@@ -104,6 +103,10 @@
                                                     <li>
                                                         <i class="bi bi-building me-2"></i>
                                                         @song.Label
+                                                    </li>
+                                                    <li>
+                                                        <i class="bi bi-heart text-muted fs-6"></i>
+                                                        @song.Likes
                                                     </li>
                                                 </ul>
                                             </div>
