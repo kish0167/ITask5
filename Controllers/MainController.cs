@@ -14,7 +14,18 @@ public class MainController(ILogger<MainController> logger, IDataGenerator dataG
     public IActionResult Index(string? seed, float? likes, int? page)
     {
         string language = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-        return View(_dataGenerator.GeneratePage(language, seed, likes, page));
+        return View(_dataGenerator.GeneratePage(language, seed, likes, page, HttpContext.Session));
+    }
+    
+    [HttpGet("music/stream/{audioId}")]
+    public IActionResult Stream(string audioId)
+    {
+        var audioBytes = HttpContext.Session.Get(audioId);
+        
+        if (audioBytes == null || audioBytes.Length == 0)
+            return NotFound("Audio expired or not found");
+        
+        return File(audioBytes, "audio/wav", $"{audioId}.wav");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

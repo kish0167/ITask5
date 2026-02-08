@@ -24,7 +24,15 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
         .AddSupportedCultures(Languages.All.ToArray())
         .AddSupportedUICultures(Languages.All.ToArray());
 });
-builder.Services.AddSession();
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(3);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -33,6 +41,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
 app.UseRequestLocalization();
 app.UseHttpsRedirection();
 app.UseStaticFiles();

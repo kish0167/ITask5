@@ -12,11 +12,11 @@ public class DataGenerator(IOptions<DataGeneratorOptions> options, ITextGenerato
     private readonly ITextGenerator _textGenerator = textGenerator;
     private readonly IAudioGenerator _audioGenerator = audioGenerator;
 
-    public PageViewModel GeneratePage(string? language, string? seed, float? likes, int? page)
+    public PageViewModel GeneratePage(string? language, string? seed, float? likes, int? page, ISession session)
     {
         GenerationParameters parameters = CreateGenerationParameters(language, seed, likes, page);
         List<SongViewModel> songs = _textGenerator.GenerateSongsWithText(parameters);
-        songs = _audioGenerator.AddAudio(songs, parameters);
+        songs = _audioGenerator.AddAudio(songs, session, parameters);
         return new PageViewModel()
         {
             Songs = songs,

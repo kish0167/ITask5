@@ -61,25 +61,12 @@
                                     <div class="col-md-6 col-lg-7">
                                         <h4 class="mb-1">@song.Title</h4>
                                         <p class="text-muted mb-3">from @song.Album by @song.Artist</p>
-                                        
-                                        <!-- Audio Player -->
-                                        <div class="audio-player mb-3">
-                                            <button class="btn btn-primary btn-lg play-btn"
-                                                    data-audio="@song.PreviewAudioUrl"
-                                                    onclick="togglePlay(this, event)">
-                                                <i class="bi bi-play-fill"></i> @Localazier["play_button_label"]
-                                            </button>
-                                            <div class="progress-container mt-2 d-none" id="progress-@song.Id">
-                                                <div class="progress" style="height: 6px;">
-                                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                                         role="progressbar" style="width: 0"></div>
-                                                </div>
-                                                <small class="text-muted">
-                                                    <span class="current-time">0:00</span> /
-                                                    <span class="duration">@SongHelpers.FormatDuration(song.DurationSeconds)</span>
-                                                </small>
-                                            </div>
-                                        </div>
+                                        <button type="button" class="btn btn-link" id="loadButton-@song.Id">Load</button>
+                                        <audio controls id="audio-@song.Id">
+                                            <source src="" type="audio/wav" id="audioSource-@song.Id"
+                                                    sessionId="@song.PreviewAudioUrl">
+                                            Your browser does not support the audio element.
+                                        </audio>
                                     </div>
                                     
                                     <!-- Stats -->
@@ -172,4 +159,12 @@
         params.set('page', page);
         window.location.href = '@Url.Action("Index")?' + params.toString();
     }
+    
+    document.getElementById('loadButton-1').addEventListener('click', async () => {
+        const player = document.getElementById('audio-1');
+        const source = document.getElementById('audioSource-1');
+        
+        source.src = `/music/stream/${source.getAttribute('sessionId')}`;
+        player.load();
+    });
 </script>
