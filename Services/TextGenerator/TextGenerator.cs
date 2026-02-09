@@ -11,7 +11,9 @@ public class TextGenerator : ITextGenerator
     {
         Faker<SongViewModel> songFaker = CreateFaker(parameters);
         songFaker.UseSeed(GetSeedForFaker(parameters));
-        return songFaker.Generate(parameters.SongsPerPage);
+        List<SongViewModel> songs = songFaker.Generate(parameters.SongsPerPage);
+        GenerateIndividualSeeds(songs, parameters);
+        return songs;
     }
 
     private Faker<SongViewModel> CreateFaker(GenerationParameters parameters)
@@ -26,8 +28,7 @@ public class TextGenerator : ITextGenerator
             .RuleFor(s => s.DurationSeconds, f => f.Random.Int(110, 420))
             .RuleFor(s => s.Year, f => f.Random.Int(1950, 2026))
             .RuleFor(s => s.Likes, f => f.Random.Int(0, 10))
-            .RuleFor(s => s.Label, f => f.Company.CompanyName())
-            .RuleFor(s => s.Seed, GetSeedForFaker(parameters));
+            .RuleFor(s => s.Label, f => f.Company.CompanyName());
     }
 
     private string GenerateAlbumTitle(Faker faker, string locale)
@@ -42,7 +43,14 @@ public class TextGenerator : ITextGenerator
     
     private int GetSeedForFaker(GenerationParameters parameters)
     {
-        int seed = parameters.Seed.GetHashCode() + parameters.Page;
-        return parameters.Seed.GetHashCode() + parameters.Page;
+        return HashCode.Combine(parameters.Seed, parameters.Page);
+    }
+    
+    private void GenerateIndividualSeeds(List<SongViewModel> songs, GenerationParameters parameters)
+    {
+        foreach (SongViewModel song in songs)
+        {
+            song.Seed = HashCode.Combine(GetSeedForFaker(parameters), song.Id);;
+        }
     }
 }
