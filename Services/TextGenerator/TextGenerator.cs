@@ -13,6 +13,7 @@ public class TextGenerator : ITextGenerator
         songFaker.UseSeed(GetSeedForFaker(parameters));
         List<SongViewModel> songs = songFaker.Generate(parameters.SongsPerPage);
         GenerateIndividualSeeds(songs, parameters);
+        LikesRandomizer.GenerateLikesForSongs(songs, parameters);
         return songs;
     }
 
@@ -25,7 +26,7 @@ public class TextGenerator : ITextGenerator
             .RuleFor(s => s.Album, f => GenerateAlbumTitle(f, parameters.Language))
             .RuleFor(s => s.Genre, f => f.Music.Genre())
             .RuleFor(s => s.CoverImageUrl, f => f.Image.PicsumUrl(300, 300))
-            .RuleFor(s => s.DurationSeconds, f => f.Random.Int(10, 100))
+            .RuleFor(s => s.DurationSeconds, f => f.Random.Int(10, 20))
             .RuleFor(s => s.Year, f => f.Random.Int(1950, 2026))
             .RuleFor(s => s.Likes, f => f.Random.Int(0, 10))
             .RuleFor(s => s.Label, f => f.Company.CompanyName());

@@ -16,7 +16,7 @@ public class AudioGenerator : IAudioGenerator
         261.63f, 293.66f, 329.63f, 349.23f, 392.00f, 440.00f, 493.88f
     };
     private static readonly int[] StandardChordStages = {
-        0, 2, 4
+        0, 4, 7
     };
 
     private static readonly List<int[]> PopularMinorChordsProgressions =
@@ -72,8 +72,8 @@ public class AudioGenerator : IAudioGenerator
                 double timeSinceDrum1 = (double)(i % samplesPerDrum1) / sampleRate;
                 double timeSinceDrum2 = (double)(i % samplesPerDrum2) / sampleRate;
                 
-                float sample = GetSample(timeSinceTact, chordsFrequencies[currentNote]) * 0.05f;
-                sample = ApplyOverdrive(sample, 10f, 1f);
+                float sample = GetStringSample(timeSinceTact, chordsFrequencies[currentNote]) * 1.5f;
+                sample = ApplyOverdrive(sample, 7f, 0.8f) * 0.3f;
                 
                 int positionInNote = i % samplesPerTact;
                 float envelope = 1.0f;
@@ -117,23 +117,32 @@ public class AudioGenerator : IAudioGenerator
 
     private float[] ExtendKey(float[] notes)
     {
-        float[] extendedNotes = new float[notes.Length * 2];
+        float[] extendedNotes = new float[notes.Length * 3];
         Array.Copy(notes, extendedNotes, notes.Length);
-        for (int i = 0; i < notes.Length; i++)
+        for (int i = 0; i < notes.Length * 2; i++)
         {
-            extendedNotes[i + notes.Length] = notes[i] * 2;
+            extendedNotes[i + notes.Length] = extendedNotes[i] * 2;
         }
         return extendedNotes;
     }
 
-    private float GetSample(double time, List<float> frequenciesPlaying)
+    private float GetStringSample(double time, List<float> frequenciesPlaying)
     {
         float sample = 0;
+        float amp = (float)Math.Exp(-1.4 * time);
+        float amp2 = (float)Math.Exp(-1.8 * time);
+        float amp3 = (float)Math.Exp(-2.1 * time);
+        float amp4 = (float)Math.Exp(-2.6 * time);
+        float amp5 = (float)Math.Exp(-3.5 * time);
         foreach (float frequency in frequenciesPlaying)
         {
             sample += (float)Math.Sin(2 * Math.PI * frequency * time);
+            sample += (float)Math.Sin(2 * Math.PI * frequency * 2f * time) * amp2;
+            sample += (float)Math.Sin(2 * Math.PI * frequency * 3f * time) * amp3;
+            sample += (float)Math.Sin(2 * Math.PI * frequency * 4f * time) * amp4;
+            sample += (float)Math.Sin(2 * Math.PI * frequency * 5f * time) * amp5;
         }
-        return sample;
+        return sample * amp;
     }
 
     private List<List<float>> GetChordFrequencies(float[] notes, int[] progression)
@@ -154,7 +163,7 @@ public class AudioGenerator : IAudioGenerator
     {
         float[] notes = new float[CMajor.Length];
         Array.Copy(CMajor, notes, CMajor.Length);
-        KeyShift(notes, random.Next(-5, 5));
+        KeyShift(notes, random.Next(-18, -10));
         isMajor = random.Next() % 1 == 0;
         if (!isMajor) MinorFromMajor(notes);
         return ExtendKey(notes);
