@@ -6,6 +6,5 @@ namespace ITask5.Services.AudioGenerator;
 
 public interface IAudioGenerator
 {
-    public List<SongViewModel> AddAudio(List<SongViewModel> songs, ISession session, GenerationParameters parameters);
-    public byte[] Generate(int seed);
+    public byte[] Generate(int seed, int duration);
 }

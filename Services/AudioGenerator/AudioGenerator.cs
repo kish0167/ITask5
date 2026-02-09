@@ -7,30 +7,29 @@ namespace ITask5.Services.AudioGenerator;
 
 public class AudioGenerator : IAudioGenerator
 {
-    public List<SongViewModel> AddAudio(List<SongViewModel> songs, ISession session, GenerationParameters parameters)
+    public byte[] Generate(int seed, int duration)
     {
-        byte[] audioBytes = GenerateRandomMusic(15);
-        var audioId = Guid.NewGuid().ToString("N");
-        session.Set(audioId, audioBytes);
-        songs[0].SessionAudioDataId = audioId;
-        return songs;
+        return GenerateRandomMusic(seed, duration);
     }
 
-    public byte[] Generate(int seed)
-    {
-        return GenerateRandomMusic(10);
-    }
+    private static readonly float[] CMajor = {
+        261.63f, 293.66f, 329.63f, 349.23f, 392.00f, 440.00f, 493.88f, 523.25f
+    };
+    private const float SemiTone = 1.0594631f;
 
-    public byte[] GenerateRandomMusic(int durationSeconds = 10)
+    public byte[] GenerateRandomMusic(int seed, int durationSeconds)
     {
-        var sampleRate = 44100;
-        var channels = 2;
-        var totalSamples = sampleRate * durationSeconds;
-    
-        // C major scale frequencies (C4 to B4)
-        var notes = new[] { 261.63f, 293.66f, 329.63f, 349.23f, 392.00f, 440.00f, 493.88f, 523.25f };
-        var samplesPerNote = sampleRate / 2; // Half second per note
-    
+        Random random = new Random(seed);
+        int sampleRate = 44100;
+        int channels = 2;
+        int totalSamples = sampleRate * durationSeconds;
+        
+        float[] notes = new float[CMajor.Length];
+        Array.Copy(CMajor, notes, CMajor.Length);
+        KeyShift(notes, random.Next(-5, 5));
+        MajorMinorKey(notes, random.Next() % 2);
+        
+        int samplesPerNote = sampleRate / 2; 
         using var ms = new MemoryStream();
         var waveFormat = new WaveFormat(sampleRate, 16, channels);
     
@@ -38,17 +37,15 @@ public class AudioGenerator : IAudioGenerator
         {
             for (int i = 0; i < totalSamples; i++)
             {
-                // Sequential note selection
-                var noteIndex = (i / samplesPerNote) % notes.Length;
-                var frequency = notes[noteIndex];
+                int noteIndex = (i / samplesPerNote) % notes.Length;
+                float frequency = notes[noteIndex];
             
-                var time = (double)i / sampleRate;
-                var sample = (float)Math.Sin(2 * Math.PI * frequency * time);
-            
-                // Simple envelope (attack/release)
-                var positionInNote = i % samplesPerNote;
-                var envelope = 1.0f;
-                var fadeSamples = 2000;
+                double time = (double)i / sampleRate;
+                float sample = (float)Math.Sin(2 * Math.PI * frequency * time);
+                
+                int positionInNote = i % samplesPerNote;
+                float envelope = 1.0f;
+                int fadeSamples = 2000;
             
                 if (positionInNote < fadeSamples) 
                     envelope = positionInNote / (float)fadeSamples;
@@ -64,5 +61,26 @@ public class AudioGenerator : IAudioGenerator
         }
     
         return ms.ToArray();
+    }
+
+    private float[] KeyShift(float[] notes, int shift)
+    {
+        float totalFactor = (float)Math.Pow(SemiTone, shift);
+        for (int i = 0; i < notes.Length; i++)
+        {
+            notes[i] *= totalFactor;
+        }
+        return notes;
+    }
+
+    private float[] MajorMinorKey(float[] notes, int value)
+    {
+        if (value > 0)
+        {
+            notes[2] /= SemiTone;
+            notes[5] /= SemiTone;
+            notes[6] /= SemiTone;
+        }
+        return notes;
     }
 }

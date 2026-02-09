@@ -19,10 +19,10 @@ public class MainController(ILogger<MainController> logger, IDataGenerator dataG
         return View(_dataGenerator.GeneratePage(language, seed, likes, page));
     }
     
-    [HttpGet("music/stream/{songSeed}")]
-    public IActionResult Stream(int songSeed)
+    [HttpGet("music/stream/{songSeed}/{duration}")]
+    public IActionResult Stream(int songSeed, int duration)
     {
-        byte[] audioBytes = _audioGenerator.Generate(songSeed);
+        byte[] audioBytes = _audioGenerator.Generate(songSeed, duration);
         return File(audioBytes, "audio/wav", $"s{songSeed}.wav");
     }
 

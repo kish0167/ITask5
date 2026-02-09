@@ -13,8 +13,5 @@ public class SongViewModel
     public int? Year { get; set; }
     public int? Likes { get; set; }
     public string? Label { get; set; }
-    
-    public string? SessionAudioDataId { get; set; }
-    
     public int? Seed { get; set; }
 }

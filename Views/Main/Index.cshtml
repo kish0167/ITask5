@@ -22,7 +22,8 @@
                     aria-controls="details-@song.Id"
                     style="cursor: pointer;"
                     id="@song.Id"
-                    song-seed="@song.Seed">
+                    song-seed="@song.Seed"
+                    song-duration="@song.DurationSeconds">
                     <td>
                         <i class="bi bi-chevron-down toggle-icon" id="icon-@song.Id"></i>
                     </td>
@@ -64,8 +65,7 @@
                                         <h4 class="mb-1">@song.Title</h4>
                                         <p class="text-muted mb-3">from @song.Album by @song.Artist</p>
                                         <audio controls id="audio-@song.Id">
-                                            <source src="" type="audio/wav" id="audioSource-@song.Id"
-                                                    sessionId="@song.SessionAudioDataId">
+                                            <source src="" type="audio/wav" id="audioSource-@song.Id">
                                             Your browser does not support the audio element.
                                         </audio>
                                     </div>
@@ -148,8 +148,7 @@
 <script>
     document.querySelectorAll('.song-row').forEach(row => {
         row.addEventListener('click', function(e) {
-            loadAudioForRow(row);
-            if (this.getAttribute('aria-expanded') === 'false') loadAudioForRow(row);
+            if (this.getAttribute('aria-expanded') === 'true') loadAudioForRow(row);
             this.classList.toggle('active-expand');
         });
     });
@@ -157,7 +156,7 @@
     function loadAudioForRow(row){
         const player = document.getElementById(`audio-${row.id}`);
         const source = document.getElementById(`audioSource-${row.id}`);
-        source.src = `/music/stream/${row.getAttribute('song-seed')}`;
+        source.src = `/music/stream/${row.getAttribute('song-seed')}/${row.getAttribute('song-duration')}`;
         player.load();
     }
     
