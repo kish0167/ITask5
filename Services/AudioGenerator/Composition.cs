@@ -13,7 +13,8 @@ public class Composition
     private readonly int _totalSamples;
     private readonly List<float[]> _chordsSamples;
     private readonly List<float[]> _drumsSamples;
-    private readonly float[] _strikeSchema;
+    private readonly float[] _strikeSchema1;
+    private readonly float[] _strikeSchema2;
     private readonly float[] _kickSchema;
     private readonly float[] _hatSchema;
 
@@ -27,7 +28,8 @@ public class Composition
         _chordsSamples = Synthesizer.GenerateChordsSamples(_samplesPerTact, SampleRate, _random);
         _drumsSamples = Synthesizer.GenerateDrumsSamples(_samplesPerTact, SampleRate, _random);
         _samplesPerProgression = _samplesPerTact * _chordsSamples.Count;
-        _strikeSchema = MusicTheory.GetRandomStrikeSchema(_random);
+        _strikeSchema1 = MusicTheory.GetRandomStrikeSchema(_random);
+        _strikeSchema2 = MusicTheory.GetRandomStrikeSchema(_random);
         _kickSchema = MusicTheory.GetRandomDrumKickSchema(_random);
         _hatSchema = MusicTheory.GetRandomDrumHatSchema(_random);
     }
@@ -55,22 +57,35 @@ public class Composition
     private float ApplySchemas(int i)
     {
         float sample = 0;
-        int progressionSampleIndex = i % _samplesPerProgression;
-        int chordIndex = progressionSampleIndex / _samplesPerTact;
+        sample = ApplyStrikeSchemas(i, sample);
+        sample = ApplyDrumsSchemas(i, sample);
+        return sample;
+    }
 
-        foreach (float offset in _strikeSchema)
-        {
-            sample += GetSampleWithOffset(_chordsSamples[chordIndex], i, offset) * 0.03f;
-        }
+    private float ApplyDrumsSchemas(int i, float sample)
+    {
         foreach (float offset in _kickSchema)
         {
             sample += GetSampleWithOffset(_drumsSamples[0], i, offset) * 0.3f;
         }
+
         foreach (float offset in _hatSchema)
         {
             sample += GetSampleWithOffset(_drumsSamples[1], i, offset) * 0.3f;
         }
 
+        return sample;
+    }
+
+    private float ApplyStrikeSchemas(int i, float sample)
+    {
+        int progressionSampleIndex = i % _samplesPerProgression;
+        int chordIndex = progressionSampleIndex / _samplesPerTact;
+        float[] strikeSchema = chordIndex % 2 == 1 ? _strikeSchema2 : _strikeSchema1;
+        foreach (float offset in strikeSchema)
+        {
+            sample += GetSampleWithOffset(_chordsSamples[chordIndex], i, offset) * 0.03f;
+        }
         return sample;
     }
 
