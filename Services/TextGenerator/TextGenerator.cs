@@ -34,6 +34,7 @@ public class TextGenerator : ITextGenerator
 
     private string GenerateAlbumTitle(Faker faker, string locale)
     {
+        
         return "abc";
     }
 
