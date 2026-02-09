@@ -2,7 +2,7 @@
 
 public static class Synthesizer
 {
-    private const float MaxDrive = 4f;
+    private const float MaxDrive = 2f;
     private const float MinMix = 0.2f;
     public static List<float[]> GenerateChordsSamples(int length, int sampleRate, Random random)
     {
