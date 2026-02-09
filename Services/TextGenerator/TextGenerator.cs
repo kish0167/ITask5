@@ -23,11 +23,11 @@ public class TextGenerator : ITextGenerator
             .RuleFor(s => s.Album, f => GenerateAlbumTitle(f, parameters.Language))
             .RuleFor(s => s.Genre, f => f.Music.Genre())
             .RuleFor(s => s.CoverImageUrl, f => f.Image.PicsumUrl(300, 300))
-            .RuleFor(s => s.PreviewAudioUrl, f => f.Internet.UrlWithPath("https", "audio.example.com", "/tracks/"))
             .RuleFor(s => s.DurationSeconds, f => f.Random.Int(110, 420))
             .RuleFor(s => s.Year, f => f.Random.Int(1950, 2026))
             .RuleFor(s => s.Likes, f => f.Random.Int(0, 10))
-            .RuleFor(s => s.Label, f => f.Company.CompanyName());
+            .RuleFor(s => s.Label, f => f.Company.CompanyName())
+            .RuleFor(s => s.Seed, GetSeedForFaker(parameters));
     }
 
     private string GenerateAlbumTitle(Faker faker, string locale)

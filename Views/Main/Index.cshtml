@@ -20,7 +20,9 @@
                     data-bs-target="#details-@song.Id" 
                     aria-expanded="false" 
                     aria-controls="details-@song.Id"
-                    style="cursor: pointer;">
+                    style="cursor: pointer;"
+                    id="@song.Id"
+                    song-seed="@song.Seed">
                     <td>
                         <i class="bi bi-chevron-down toggle-icon" id="icon-@song.Id"></i>
                     </td>
@@ -61,10 +63,9 @@
                                     <div class="col-md-6 col-lg-7">
                                         <h4 class="mb-1">@song.Title</h4>
                                         <p class="text-muted mb-3">from @song.Album by @song.Artist</p>
-                                        <button type="button" class="btn btn-link" id="loadButton-@song.Id">Load</button>
                                         <audio controls id="audio-@song.Id">
                                             <source src="" type="audio/wav" id="audioSource-@song.Id"
-                                                    sessionId="@song.PreviewAudioUrl">
+                                                    sessionId="@song.SessionAudioDataId">
                                             Your browser does not support the audio element.
                                         </audio>
                                     </div>
@@ -147,12 +148,18 @@
 <script>
     document.querySelectorAll('.song-row').forEach(row => {
         row.addEventListener('click', function(e) {
-            if (e.target.closest('.play-btn')) return;
-            const targetId = this.getAttribute('data-bs-target');
-            const icon = this.querySelector('.toggle-icon');
+            loadAudioForRow(row);
+            if (this.getAttribute('aria-expanded') === 'false') loadAudioForRow(row);
             this.classList.toggle('active-expand');
         });
     });
+    
+    function loadAudioForRow(row){
+        const player = document.getElementById(`audio-${row.id}`);
+        const source = document.getElementById(`audioSource-${row.id}`);
+        source.src = `/music/stream/${row.getAttribute('song-seed')}`;
+        player.load();
+    }
     
     function goToPage(page) {
         const params = new URLSearchParams(window.location.search);
@@ -160,11 +167,5 @@
         window.location.href = '@Url.Action("Index")?' + params.toString();
     }
     
-    document.getElementById('loadButton-1').addEventListener('click', async () => {
-        const player = document.getElementById('audio-1');
-        const source = document.getElementById('audioSource-1');
-        
-        source.src = `/music/stream/${source.getAttribute('sessionId')}`;
-        player.load();
-    });
+    
 </script>

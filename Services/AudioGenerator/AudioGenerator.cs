@@ -12,10 +12,15 @@ public class AudioGenerator : IAudioGenerator
         byte[] audioBytes = GenerateRandomMusic(15);
         var audioId = Guid.NewGuid().ToString("N");
         session.Set(audioId, audioBytes);
-        songs[0].PreviewAudioUrl = audioId;
+        songs[0].SessionAudioDataId = audioId;
         return songs;
     }
-    
+
+    public byte[] Generate(int seed)
+    {
+        return GenerateRandomMusic(10);
+    }
+
     public byte[] GenerateRandomMusic(int durationSeconds = 10)
     {
         var sampleRate = 44100;
