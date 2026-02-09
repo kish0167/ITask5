@@ -1,7 +1,6 @@
 ﻿using ITask5.Models;
 using ITask5.Services.DataGenerator;
 using Bogus;
-using Bogus.DataSets;
 
 namespace ITask5.Services.TextGenerator;
 
@@ -26,7 +25,7 @@ public class TextGenerator : ITextGenerator
             .RuleFor(s => s.Album, f => GenerateAlbumTitle(f, parameters.Language))
             .RuleFor(s => s.Genre, f => f.Music.Genre())
             .RuleFor(s => s.CoverImageUrl, f => f.Image.PicsumUrl(300, 300))
-            .RuleFor(s => s.DurationSeconds, f => f.Random.Int(10, 20))
+            .RuleFor(s => s.DurationSeconds, f => f.Random.Int(15, 30))
             .RuleFor(s => s.Year, f => f.Random.Int(1950, 2026))
             .RuleFor(s => s.Likes, f => f.Random.Int(0, 10))
             .RuleFor(s => s.Label, f => f.Company.CompanyName());
@@ -34,25 +33,24 @@ public class TextGenerator : ITextGenerator
 
     private string GenerateAlbumTitle(Faker faker, string locale)
     {
-        
-        return "abc";
+        return WordsManipulator.GenerateWords(faker, locale, isTitle: false);
     }
 
     private string GenerateSongTitle(Faker faker, string locale)
     {
-        return "Song!";
+        return WordsManipulator.GenerateWords(faker, locale, isTitle: true);
     }
     
     private int GetSeedForFaker(GenerationParameters parameters)
     {
-        return HashCode.Combine(parameters.Seed, parameters.Page);
+        return HashCode.Combine(parameters.Seed, parameters.Page, parameters.Language);
     }
     
     private void GenerateIndividualSeeds(List<SongViewModel> songs, GenerationParameters parameters)
     {
         foreach (SongViewModel song in songs)
         {
-            song.Seed = HashCode.Combine(GetSeedForFaker(parameters), song.Id);;
+            song.Seed = HashCode.Combine(GetSeedForFaker(parameters), song.Id);
         }
     }
 }

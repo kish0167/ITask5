@@ -75,7 +75,7 @@ public static class MusicTheory
             chords.Add(new List<float>());
             for (int j = 0; j < StandardChordStages.Length; j++)
             {
-                chords[i].Add(notes[progression[i] + StandardChordStages[j]]);
+                chords[i].Add(notes[progression[i] + StandardChordStages[j] - 1]);
             }
         }
         return chords;

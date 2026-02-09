@@ -1,14 +1,12 @@
-﻿using NAudio.Wave;
+﻿using ITask5.Services.AudioGenerator.ReverbEffect;
+using NAudio.Wave;
 
 namespace ITask5.Services.AudioGenerator;
 
 public class Composition
 {
     private const int SampleRate = 44100;
-    private readonly Random _random;
-    private readonly int _bpm;
     private readonly int _samplesPerTact;
-    private readonly int _samplesPerBeat;
     private readonly int _samplesPerProgression;
     private readonly int _totalSamples;
     private readonly List<float[]> _chordsSamples;
@@ -21,17 +19,16 @@ public class Composition
     public Composition(int duration, int seed)
     {
         _totalSamples = SampleRate * duration;
-        _random = new Random(seed);
-        _bpm = _random.Next(70, 180);
-        _samplesPerTact = SampleRate * 240 / _bpm;
-        _samplesPerBeat = SampleRate * 60 / _bpm;
-        _chordsSamples = Synthesizer.GenerateChordsSamples(_samplesPerTact, SampleRate, _random);
-        _drumsSamples = Synthesizer.GenerateDrumsSamples(_samplesPerTact, SampleRate, _random);
+        Random random = new Random(seed);
+        int bpm = random.Next(70, 180);
+        _samplesPerTact = SampleRate * 240 / bpm;
+        _chordsSamples = Synthesizer.GenerateChordsSamples(_samplesPerTact, SampleRate, random);
+        _drumsSamples = Synthesizer.GenerateDrumsSamples(_samplesPerTact, SampleRate, random);
         _samplesPerProgression = _samplesPerTact * _chordsSamples.Count;
-        _strikeSchema1 = MusicTheory.GetRandomStrikeSchema(_random);
-        _strikeSchema2 = MusicTheory.GetRandomStrikeSchema(_random);
-        _kickSchema = MusicTheory.GetRandomDrumKickSchema(_random);
-        _hatSchema = MusicTheory.GetRandomDrumHatSchema(_random);
+        _strikeSchema1 = MusicTheory.GetRandomStrikeSchema(random);
+        _strikeSchema2 = MusicTheory.GetRandomStrikeSchema(random);
+        _kickSchema = MusicTheory.GetRandomDrumKickSchema(random);
+        _hatSchema = MusicTheory.GetRandomDrumHatSchema(random);
     }
     
     public byte[] CreateWavTrack()
@@ -47,9 +44,11 @@ public class Composition
 
     private void WriteToWav(WaveFileWriter writer)
     {
+        Reverb reverb = new Reverb(SampleRate);
         for (int i = 0; i < _totalSamples; i++)
         {
             float sample = ApplySchemas(i);
+            sample = reverb.Process(sample);
             writer.WriteSample(sample);
         }
     }

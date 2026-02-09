@@ -35,4 +35,12 @@
         <value>Informacje o utworze</value>
         <comment>track_info</comment>
     </data>
+    <data name="from" xml:space="preserve">
+        <value>z albumu</value>
+        <comment>from</comment>
+    </data>
+    <data name="by" xml:space="preserve">
+        <value />
+        <comment>by</comment>
+    </data>
 </root>

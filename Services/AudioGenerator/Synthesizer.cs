@@ -2,7 +2,7 @@
 
 public static class Synthesizer
 {
-    private const float MaxDrive = 7f;
+    private const float MaxDrive = 4f;
     private const float MinMix = 0.2f;
     public static List<float[]> GenerateChordsSamples(int length, int sampleRate, Random random)
     {
@@ -56,12 +56,15 @@ public static class Synthesizer
             sample += (float)Math.Sin(2 * Math.PI * frequency * 3f * time) * amp3;
             sample += (float)Math.Sin(2 * Math.PI * frequency * 4f * time) * amp4;
             sample += (float)Math.Sin(2 * Math.PI * frequency * 5f * time) * amp5;
+            sample += (float)Math.Sin(2 * Math.PI * frequency * 6f * time) * amp5;
+            sample += (float)Math.Sin(2 * Math.PI * frequency * 7f * time) * amp5;
         }
-        return sample * amp;
+        return sample * amp / frequenciesPlaying.Count;
     }
     
     private static float GetKickSample(double time)
     {
+        float sample = 0;
         double freq = 123 / (time + 1);  
         double amp = Math.Exp(-3.0 * time);
         return (float)(Math.Sin(2.0 * Math.PI * freq * time) * 0.5f * amp);
@@ -75,7 +78,7 @@ public static class Synthesizer
     
     private static void ApplyOverdrive(List<float[]> input, Random random)
     {
-        float drive = random.NextSingle() * MaxDrive;
+        float drive = random.NextSingle() * (MaxDrive - 1) + 1;
         float mix = random.NextSingle() * (1 - MinMix) + MinMix;
         foreach (float[] samples in input)
         {
