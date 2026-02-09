@@ -18,9 +18,16 @@ public static class LikesRandomizer
     {
         if (targetAverage <= 0) return 0;
         if (targetAverage >= 10) return 10;
-        return PoissonLikeDistribution(targetAverage, random);
+        return SimpleDistribution(targetAverage, random);
     }
-    
+
+    private static int SimpleDistribution(float targetAverage, Random random)
+    {
+        int baseline = (int)targetAverage;
+        float mod = targetAverage % 1f;
+        return random.NextSingle() < mod ? baseline + 1 : baseline;
+    }
+
     private static int PoissonLikeDistribution(double lambda, Random random)
     {
         double threshold = random.NextDouble();
